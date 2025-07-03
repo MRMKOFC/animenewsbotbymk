@@ -180,7 +180,7 @@ def send_to_telegram(title, image_url, summary):
         f"﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏\n"
         f"{safe_summary}\n"
         f"﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋\n"
-        f"🍁 | @AniTimesIsland_acn"
+        f"🍁| @TheAnimeTimes_acn"
     )
 
     # Ensure caption length is within Telegram's 1024-character limit for sendPhoto
@@ -191,7 +191,7 @@ def send_to_telegram(title, image_url, summary):
             f"﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏\n"
             f"{safe_summary}\n"
             f"﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋﹋\n"
-            f"🍁 | @AniTimesIsland_acn"
+            f"🍁| @TheAnimeTimes_acn"
         )
 
     logging.info(f"Sending to Telegram - Title: {title}")
@@ -254,4 +254,3 @@ def run_once():
 
 if __name__ == "__main__":
     run_once()
-        
