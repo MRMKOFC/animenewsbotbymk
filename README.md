@@ -2,6 +2,12 @@
 
 A Python automation bot that fetches anime news from **Anime News Network (ANN)** and publishes formatted updates to a Telegram channel.
 
+## Live Demo
+
+📢 **Telegram Channel:** https://t.me/AniTimesIsland_acn
+
+The Telegram channel is the live output of the automation pipeline.
+
 ## Pipeline
 
 ```text
@@ -70,7 +76,7 @@ BOT_TOKEN=<telegram-bot-token>
 CHAT_ID=<telegram-channel-or-chat-id>
 ```
 
-These are the exact names used by `animebot.py`. fileciteturn72file0
+These are the exact names used by `animebot.py`.
 
 **Never commit a real Telegram token to Git.**
 
@@ -84,7 +90,7 @@ The state is local runtime data. If the execution environment is ephemeral, dupl
 
 ## Image handling
 
-The bot validates image URLs before attempting publication. If an image cannot be retrieved or processed, the text-only fallback can still publish the article. fileciteturn72file0
+The bot validates image URLs before attempting publication. If an image cannot be retrieved or processed, the text-only fallback can still publish the article.
 
 ## Reliability
 
