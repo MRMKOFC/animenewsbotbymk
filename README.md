@@ -15,7 +15,7 @@ Anime News Network
         ↓
  Format + escape HTML
         ↓
- Image publishing
+ Image validation / publishing
         ↓
  Telegram channel
 ```
@@ -26,17 +26,18 @@ Anime News Network
 - Publishes images with formatted captions when available
 - Falls back to text when image publishing fails
 - Prevents duplicate posts using local JSON state
-- Timezone-aware filtering with `Asia/Kolkata` as the documented default
+- Asia/Kolkata timezone-aware filtering
 - HTML escaping for Telegram messages
 - Retry handling for transient network failures
+- Concurrent article-detail fetching
 - Designed for scheduled/cron execution
 
 ## Requirements
 
 - Python 3.9+
 - Telegram Bot Token
-- Telegram channel/group chat ID
-- Network access to the configured news source and Telegram API
+- Telegram chat/channel ID
+- Network access to Anime News Network and Telegram API
 
 ## Installation
 
@@ -62,45 +63,48 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Provide the Telegram credentials expected by the application through environment variables or the configuration mechanism used by the current source code.
-
-**Never commit a real bot token to Git.**
-
-Typical deployment configuration should include:
+The bot reads these environment variables directly:
 
 ```text
 BOT_TOKEN=<telegram-bot-token>
-CHANNEL_ID=<telegram-channel-or-chat-id>
+CHAT_ID=<telegram-channel-or-chat-id>
 ```
 
-Check the source for the exact variable names before deployment.
+These are the exact names used by `animebot.py`. fileciteturn72file0
+
+**Never commit a real Telegram token to Git.**
+
+For GitHub Actions, store the values as repository secrets and expose them to the workflow environment.
 
 ## Duplicate protection
 
-The bot keeps local state so an article already published by a previous scheduled run can be skipped. This makes repeated cron/GitHub Actions executions safer than publishing every fetched article blindly.
+Published titles are stored in `posted_titles.json`. A title already present in the state file is skipped on later scheduled runs.
 
-Because the state is local, deployments that destroy or reset the filesystem can lose the duplicate history.
+The state is local runtime data. If the execution environment is ephemeral, duplicate history can be lost between runs unless the file is persisted.
+
+## Image handling
+
+The bot validates image URLs before attempting publication. If an image cannot be retrieved or processed, the text-only fallback can still publish the article. fileciteturn72file0
 
 ## Reliability
 
-Network and Telegram operations use retry/fallback handling. Image delivery can fall back to a text-only post when the image cannot be published.
-
-A production deployment should additionally monitor failed scheduled runs and persist state on durable storage if the runtime is ephemeral.
+Network operations use a persistent HTTP session, timeouts and retry handling. Article-detail work can be performed concurrently to reduce overall scraping time.
 
 ## Scheduling
 
-The bot is intended to be run periodically rather than kept alive unnecessarily. GitHub Actions or another cron scheduler can invoke the scraper at the desired interval.
+The bot is designed to run periodically through GitHub Actions or another cron scheduler rather than requiring a permanently running process.
 
 ## Limitations
 
-- The bot depends on the upstream news site's availability and markup.
-- Scraping can break when the source changes its HTML structure.
-- Telegram limits message/media size and request frequency.
+- The bot depends on ANN's current website structure and availability.
+- Scraping can require maintenance if ANN changes its HTML.
+- Telegram imposes API and media limits.
 - Local JSON state is not a database and is not designed for concurrent writers.
+- Third-party image URLs can expire or reject requests.
 
 ## Legal / source notice
 
-News content and images remain subject to the rights and terms of their respective publishers and owners. This project is an automation/learning project and does not claim ownership of third-party content.
+News content and images remain subject to the rights and terms of their respective publishers and owners. This project does not claim ownership of third-party content.
 
 ## License
 
